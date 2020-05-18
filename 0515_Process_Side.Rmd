@@ -1,0 +1,940 @@
+---
+title: "PS531 Final Paper"
+author: "Seongjoon Ahn"
+output:
+  pdf_document:
+    number_sections: yes
+    fig_caption: yes
+    fig_height: 8
+    fig_width: 8
+  word_document: default
+fontsize: 11pt
+always_allow_html: yes
+bibliography: bibliography.bib
+---
+\input{mytexsymbols}
+
+```{r setup, echo=FALSE, results=FALSE, include=FALSE, cache=FALSE}
+library(here)
+source(here("rmd_setup.R"))
+```
+
+```{r clear, echo=FALSE, results = FALSE}
+rm(list = ls())
+```
+
+```{r loadlibs, echo=FALSE, include=FALSE, results=FALSE}
+library(tidyverse)
+library(MASS)
+library(coin)
+library(readr)
+library(xtable)
+library(stargazer)
+library(DeclareDesign)
+library(DesignLibrary)
+library(knitr)
+library(beeswarm)
+library(DT)
+library(miceadds)
+library(RItools)
+library(optmatch)
+library(dplyr)
+```
+
+# Introduction
+
+## Research Question
+
+For the past few decades, the political communication scholarship has been inundated by the so-called “new media” studies on new platforms, modalities, and technologies and their impact on politics and citizens (Sydnor 2017, Kruikemeier et al. 2018, Settle 2019). Generally, these studies defined new media as _new venues under which information is disseminated_ and sought to understand how their effects on political behavior compare to the effects of more traditional platforms. At the same time, however, an alternative strand of scholars questioned what makes the new media landscape of today really new (Chadwick 2013, Carpentier, Schroder, and Hallett 2014, Bode and Vraga 2018). They argued that the underlying difference between the ‘old’ and ‘new’ media landscape is less technological and more normative and cultural in nature. James W. Carey’s simple dichotomy between the transmission view and ritual view of communication helps clarify this strand of arguments. The former view, he argues, understands communication as “transmission and distribution of information in space for the control of distance and people.” This view, represented by the “new media” studies prevalent in the scholarship, focuses on _how_ and _through what kind of venues_ information is transmitted. On the other hand, the latter view emphasizes the “symbolic process whereby reality is produced, maintained, repaired, and transformed” (@carey_communication_1992, 3). In a similar vein, Raymond Williams argued that “development of any new medium can never be explained simply by its technological characteristics but rather is always a function of the specific culture within which it is deployed,” distinguishing the transmission focused scholarship from an understudied topic of normative and cultural examination of political communication (@williams_after_2011).
+
+In line with the ritual view of communication, this paper explicates the influences of the communication norms of the ‘new media era’ on the democratic citizenry. Instead of examining the changes in political behavior allegedly brought forth by the developments in the medium of transmission, this paper focuses on how the changes in the message affect the audiences’ underlying perceptions of the political system. Broadly, it argues that _how strictly a news content adheres to professional journalistic norms affects the audiences’ normative assessments of and preferences on democracy and democratic processes_.’ As an exploratory exercise, this study specifically examines _**whether news contents portrayed in strongly adversarial tones prime audiences to recall more competitive and adversarial institutions and procedures of democracy**_. Through this endeavor, the study shows that the news media portray cross-modal and cross-technological patterns that circumvent the dichotomy between ‘old’ and ‘new’ media. Also, this study reveals the changes that are not picked up by existing behavioral studies on media exposure – perceptions and motivations that drive political behavior. Finally, it provides a potential explanation for the increasingly polarized political environment we are witnessing today; more exposure to adversarial media not only drives audiences to watch more adversarial contents and change policy attitudes (@atkinson_combative_2017) but also changes their perceptions of democracy itself – what democracy is and how it ought to operate.
+
+# Research Design {#rdhyp}
+
+  This study’s main argument is that exposure to strong adversarial news contents will prime audiences to increasingly perceive democracy as a competitive, winner-take-all, zero-sum political system. Hence, my objective is to test whether exposure to strongly adversarial media contents will alter the audiences' perceptions of democracy. My hypotheses are as follows.
+  
+>  _**H0**: Exposure to news contents emphasizing competition between politicians and political parties will not prime audiences to perceive democracy more as a competitive political system._
+  
+>  _**H1**: Exposure to news contents emphasizing competition between politicians and political parties will prime audiences to perceive democracy more as a competitive political system._
+
+To test the hypothesis, I first conduct an observational study with cross-sectional survey data. Second, by revising one continuous variable (`exposure` variable is really a categorical variable assumed to have continuous traits) into a binary treatment variable, I replicate a randomized experiment by using propensity score matching with Mahalanobis distance. 
+
+Although randomized experiments can seem more straightforward regarding operationalization as well as justification, I conduct an observational study for two reasons. First, devising an experimental questionnaires that precisely measure one's perceptions of democracy pre- and post-treatment is extremely difficult. As the research question states, measuring how participants _"recall certain democratic institutions"_ may do the job. However, such measurement is extremely vulnerable to endogeneity problems against baseline covariates, spillover effects from unmeasurable personal experiences and/or certain triggering words in the questionnaires, and even weak treatment responses from the participants. Measuring the baseline covariates related to one's initial perceptions of democracy will also be difficult. Hence, using cross-sectional survey data to comprehensively measure how one perceives of democracy at one point in time and how that relates to how much exposure one has to adversarial news contents at that point in time will be at least as valid as conducting a randomized experiment largely vulnerable to measurement error and covariate balance problems. Second, I consider this study as an exploratory endeavor for a future randomized experiment. By showing that one's exposure to adversarial news contents are somehow, and in some ways, associated with one's perception of democracy, this study can strongly justify experimenting on this topic. Also, this study can provide insights into which baseline covariates to watch out for and what kind of measurements to use for measuring perceptions of democracy and exposure to adversarial media.
+
+## Advantages and Disadvantages of the Research Design
+
+The first part of the research design is purely observational. *Pragmatically*, observational studies are advantageous for they are low in complexity, cost, and ethical constraints compared to randomized experiments. Observational studies using survey data are especially beneficial in this respect. *Substantively*, as I mentioned above, measuring changes in one's perception of democracy pre- and post-treatment through experiments is difficult because how one perceives of democracy is often an accumulated response rather than a constantly changing one. Hence, using an observational design to look at the differences between people who claim to have different levels of average exposure to adversarial news contents at a certain point in time can be an easier way to check whether there is a meaningful association between exposure and perceptions of democracy. Self-selection, a problem of observational designs when it comes to inferring causality, can work as an advantage when we are worried about spillover effects. In an experimental setting, the presence of other respondents, or the setting of the experiment, may change the respondent's response toward adversarial news contents. In observational studies, responses are less dependent on the atmosphere, and respondents are usually less aware of external censorship. *Methodologically*, observational studies using cross-sectional survey data provides a wide array of information about a large number of respondents, revealing relationships and associations among various types of variables and interactions. In that sense, observational studies help discover variables that might be important in conducting future randomized experiments on the same topic. Especially, the first part of this study is simply observing whether the null hypothesis can be rejected or not after adjusting for the control variables. When conducted precisely, such design can provide useful information on important variables and their associations. Also, while observational studies perform poorly regarding internal validity, the associations found through the study are often more externally valid compared to experimental outcomes, allowing researchers to expect the general association to exist outside the pool of respondents of the survey.
+
+Despite the advantages of using a cross-sectional observational study to reject a null hypothesis, such research design is optimal for look at the effects of causes rather than the causes of effects (@holland_statistics_1986). Hence, the results of testing and estimating do not provide information on causality. Even when it comes to finding associations, the first part of this research design suffers from the problems of confounders and selection bias which are prevented in experiments through randomization (See [Section 3.2.1](#estimator1) for discussion confounders, control variables, and selection bias). To account for these limitations, the second part of the research replicates a randomized experiment by creating a dichotomous treatment variable and adjusting for confounders through matching on covariates (See [Section 3.2.3](#estimator3) for discussions on Matching, its assumptions and adjustments). The biggest advantage in using an experimental design is on internal validity -- the ability to infer causality. Using an experimental design, I can control all factors that may affect the results -- mainly the confounders. However, the limitations in this specific research design -- revising a continuous variable into a binary treatment variable and matching on covariates -- specifically deals with the problem of confounders. The problem is that treatment assignment was not randomized. Random assignment addresses the "missing data" problem by creating two groups of observations that are, in expectation, identical prior to application of the treatment. When treatment are allocated randomly, "the treatment group is a random sample of all [participants], and therefore, the expected potential outcome among [participants] in the treatment group are identical to the average potnetial outcomes among all [participants]" (@gerber_field_2012). In this respect, randomized treatment allows the researcher to believe that biases deriving from variations in covariates disappear. Otherwise, the researcher cannot conclude that the outcome truly derived from the treatment rather than outside variables. In order to overcome the lack of randomized treatment deriving from the revised `exposure` variable -- created initially through self-selection, I use propensity score matching with Mahalanobis Distance to adjust for the covariates, making the treatment group and control group more similar. Propensity score matching puts a combination of covariates into a single scalar -- the probability of being treated, balances the treatment and control group, and estimates the average treatment effect. By aggregating the covariates, this matching strategy overcomes the problem of dimensionality and helps make simpler and more precise comparisons between two groups to understand the effects of the treatment, or the intervention. On the downside, propensity score matching still cannot overcome the problem of omitted variable bias (or the ignorability assumption); it can only match on existing variables that the researcher chooses to include in the matching process and has to assume that there are no unobserved differences between the treatment group and the control group.
+
+## Creating a Simulated Dataset 
+
+### Population
+
+The data used in this study is partially simulated. The data's population is based on existing cross-sectional survey data^[I use the Bright Line Watch (BLW) 2019 March Survey. BLW survey data are used broadly across the political communication and media studies literature. I specifically chose this data over the ANES data (which is much more frequently used in political science) because BLW surveys ask specific questions on how participants perceive of different aspects of democracy and democratic governance. In this study, I leverage these unique questions by merging them into a "perception of democracy score.")]. I directly use the Bright Lines Watch 2019 March Survey data for the following population variables: age, gender, level of education, political affiliation, and perceptions of democracy. In addition, I simulate the explanatory variable - `exposure` an manipulate the dependent variable - `perceptions of democracy score` with a simulated error term. I will assume I have full control over my population, as if I've simulated it in its entirety because I want to assumee full control over my sample and estimand. This "full control" is useful since I base parts of my research design on the counterfactual tradition, especially when I use an estimand instead of MLE and matching with control and treatment groups; I use my estimand as an as-if Average Treatment Effect in the matching case. Having full control provides the justification for claiming a "truth value." The population distributions for each variable are shown in Figure \ref{fig:basedist}.
+
+  1. **Age**: Age is divided into 8 subgroups (1 to 8). 18 to 24 are assigned to 2. 25 to 34 are assigned to 3. Each group is then assigned for every 10 years increments. Finally, those above 85 are assigned to 9. Distribution of age is slightly rightly skewed, having more younger participants than older ones. 
+  2. **Gender**: Gender is uniformly distributed between 1 - male and 2 - female. 
+  3. **Level of Education**: Level of education is divided into 7 groups. Participants can choose from (1) Did not graduate from high school, (2) High school diploma or equivalent, (3) Some college, (4) Associate's Degree, (5) Bachelor's degree, (6) Master's degree, or (7) Professional or doctorate degree. Distribution of the level of education is strongly rightly skewed, having much more people with a bachelor's degree or less than those with master's or professional degrees. Distribution is rightly skewed with a very low distribution for (1). 
+  4. **Political Affiliation**: Political affiliation is divide into 7 groups. Participants can choose from (1) Very conservative to (7) Very liberal with (4) Moderate at the center. Distribution of political affiliation is also skewed right, more people being conservative than liberal. This distribution is in line with past findings that the U.S. leans conservative in the political ideology spectrum. 
+  5. **Perceptions of Democracy Score**: The Perceptions of Democracy Score is devised by first converging various responses from different questionnaires. In the Bright Line Watch Public Survey, there are four blocks of questions on 1) norms and behavior, 2) institutions, accountability, and Rule of law, 3) rights, protections and freedom, and 4) elections and voting. Also, it has another block of questions on congress and divided government. For the Score, I grouped the "norms and behavior: and the "congress and divided government" blocks together as "adversarial democracy" block because the questions asked in this block pertained to competitive, adversarial aspects of democratic institutions and procedures in the United States. I grouped the rest as "procedural democracy" block because the questions were more focused on the validity and quality of legal and proceduraal aspects of democratic institutions in the United States. Then, the raw score is modified by multiplying other variables in varying degrees. Finally, the error term is added. The resulting distribution is a normal distribution roughly spanning from -1 to 1. 
+  6. **Exposure to Adversarial News Contents**: The Pew Research Center's recent findings suggest that people today are much more inclined to be exposed to adversarial media (i.e. social media posts, cable news) in their everyday lives than more regulated, less partisan media (i.e. public radio, PBS)^[Mitchell, Amy, Jeffrey Gottfried, and Katerina Eva Matsa.  Jun 01, 2015. "Facebook Top Source for Political News Among Millenials." Accessed May 13, 2020. _Pew Research Center_. https://www.journalism.org/2015/06/01/facebook-top-source-for-political-news-among-millennials/]. Hence, I generate a leftly skewed distribution connoting that more audiences are exposed to more strongly adversarial news contents. 
+  7. **Error Term**: Finally, I generate a normally distributed error term. The error term is only used to generate the `dpscore` variable.
+  
+For this study, Perceptions of Democracy Score (`dpscore`) is the dependent variable. Level of Exposure to Adversarial News Contents (`exposure`) is the main independent variable, along with other independent variables I intend to adjust for -- Age (`age9`), Gender (`gender`), Level of Education (`educ7`), and Political Affiliation (`pid7`).
+
+```{r Population, echo=FALSE}
+##First, observe the population distribution through the BLW Survey Data
+
+##Bright Lines Watch Data (2019 March Survey)
+dat1 <- read_csv("data/Wave9.csv")
+## New dataframe for easier operation
+blw2019 <- dat1[,c("age9", "gender", "educ7", "pid7")]
+#View(blw2019)
+#hist(blw2019$pid7)
+blw2019$pid7[blw2019$pid7==8]=NA
+
+##Creating the perception of democracy score 
+##standardize the variables to all variables have the same scale (1,2,4,5 and 7)
+demp <- dat1[,c(37:63)]
+demp$Q173_1[demp$Q173_1==3] <- 4
+demp$Q173_1[demp$Q173_1==8] <- 5
+demp$Q173_1[demp$Q173_1==9] <- 7
+demp$Q173_2[demp$Q173_2==3] <- 4
+demp$Q173_2[demp$Q173_2==8] <- 5
+demp$Q173_2[demp$Q173_2==9] <- 7
+demp$Q173_3[demp$Q173_3==3] <- 4
+demp$Q173_3[demp$Q173_3==8] <- 5
+demp$Q173_3[demp$Q173_3==9] <- 7
+
+dempproc <- demp[,c(7:24)]
+dempcomp <- demp[,c(1,2,3,4,5,6,25,26,27)]
+
+## Rescaling. For competition-related questions--"Congress and Divided
+## Government" and "Norms and Behavior", convert extreme choices (1 and 5) as 1
+## (find important) and moderate choices (2, 4 and 7) as 0. For
+## procedure-related questions--"Institutions, Accountability, Rule of Law",
+## "Rights, Protections and Freedom", and "Elections and Voting", convert
+## extreme choices (1 and 5) as -1 (find important) and moderate choices (2, 4
+## and 7) as 0. This way, those who find competition more important in democracy
+## will return a positive perception of democracy score and those who find
+## procedure more important in democracy will return a negative score.
+
+dempproc[dempproc==1] <- -1
+dempproc[dempproc==5] <- -1
+dempproc[dempproc==2] <- 0
+dempproc[dempproc==4] <- 0
+dempproc[dempproc==7] <- 0
+dempcomp[dempcomp==1] <- 1
+dempcomp[dempcomp==5] <- 1
+dempcomp[dempcomp==2] <- 0
+dempcomp[dempcomp==4] <- 0
+dempcomp[dempcomp==7] <- 0
+
+dempproc$dpscore <- rowMeans(dempproc, na.rm = TRUE)
+dempcomp$dcscore <- rowMeans(dempcomp, na.rm = TRUE)
+
+#is.na(dempproc$dpscore) <- sapply(dempproc$dpscore, is.infinite)
+#is.na(dempcomp$dcscore) <- sapply(dempcomp$dcscore, is.infinite)
+
+##Add both scores to create a perception of democracy score. Positive means the
+##person holds a competitive perception of democracy. Negative means the person
+##holds a procedure-based perception of democracy.
+blw2019$rawdpscore <- dempproc$dpscore+dempcomp$dcscore
+blw2019a <- na.omit(blw2019)
+
+## Adding "media exposure" and "error" columns to dataframe. 
+set.seed(12345)
+blw2019a$exposure <- round(sample(1:5, size = nrow(blw2019a), replace = TRUE, prob = 1:5))
+blw2019a$err <- rnorm(n=nrow(blw2019a), 0, 0.1)
+
+## Creating the final perceptions of democracy score
+blw2019a$dpscore <- round(blw2019a$rawdpscore*0.3*blw2019a$exposure*-0.1*blw2019a$educ7 + blw2019a$err, digits=4)
+```
+
+```{r Sim_Population, echo=FALSE}
+##Create simulated population based on the reference population
+df1 = ""
+set.seed(1234)
+population <-
+  declare_population(blw2019a)
+set.seed(1234)
+df1 <- population()
+```
+
+```{r Baseline_Dist, results='asis', out.width='1\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:basedist}Simulated Population Distributions", fig.align = "center", echo=FALSE, results=TRUE}
+par(mfrow = c(2, 3))
+hist(df1$age9, main="", xlab = "Age", breaks=rep(2:9))
+hist(df1$educ7, main="", xlab = "Level of Education", breaks=rep(0:7))
+hist(df1$gender, main="", xlab = "Gender")
+hist(df1$pid7, main="", xlab = "Political Affiliation", breaks=rep(0:7))
+hist(df1$dpscore, main="", xlab = "Perception of Democracy Score")
+hist(df1$exposure, main="", xlab = "Exposure", breaks=rep(0:5))
+```
+
+After creating a population, I sample 500 observations to generate my simulated survey pool. The 500 observations are selected at random. The sample distributions for each variable are shown in Figure \ref{fig:sampdist}. The distributions show that the sample represents the population distribution very well.
+
+```{r Sampling, echo=FALSE}
+set.seed(12345)
+##Sampling 500 observations from the population
+sampling_1 <- declare_sampling(n=500)
+design_1 <- population + sampling_1
+set.seed(12345)
+df1 <- draw_data(design_1)
+```
+
+```{r Sample_Distribution, results='asis', out.width='1\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:sampdist}Sample Distributions", fig.align = "center", echo=FALSE, results=TRUE}
+par(mfrow = c(2, 3))
+hist(df1$age9, main="", xlab = "Age", breaks=rep(2:9))
+hist(df1$educ7, main="", xlab = "Level of Education", breaks=rep(0:7))
+hist(df1$gender, main="", xlab = "Gender")
+hist(df1$pid7, main="", xlab = "Political Affiliation", breaks=rep(0:7))
+hist(df1$dpscore, main="", xlab = "Perception of Democracy Score")
+hist(df1$exposure, main="", xlab = "Exposure", breaks=rep(0:5))
+```
+
+# Answer Strategies: Models, Estimators and Adjustments
+
+This section discusses about the interpretations and comparisons that the research design will induce. Broadly, this study will first use a simple, canned linear model using multiple independent variables followed by a linear model with robust standard errors. Then, it uses a matching design -- propensity score matching with Mahalanobis distance. The section begins by declaring an estimand for the first two estimators.
+
+## Estimand 1
+
+In this study, I utilize a design-based inference rather than a model-based inference. Design-based inference involves using information from a random sample to estimate some parameter of the population from which the sample was drawn (@imai_basic_2016). The question of interest in this study is whether greater exposure to adversarial news contents increase one's likelihood of perceiving democracy as a competitive political system over a procedure-based, consensual political system. In this sense, the estimand, or the target of estimation, in this study is $\beta_{1}$ -- a difference in the perception of democracy -- `dpscore` -- according to the changes in one's level of exposure to adversariala news contents -- `exposure`. Hence, the basic model that represents the estimand is the following:
+
+$$Y_{dpscore} = \beta_0 + \beta_1{X_{exposure}} + \epsilon$$
+
+The following is the estimand of the model.
+
+```{r estimand, echo=FALSE, results=TRUE, fig.align = "center"}
+#declare estimand
+make_estimands <- function(data){
+    bs <- coef(lm(dpscore~exposure, data=df1))
+    return(data.frame(estimand_label= c('exposure'),
+               estimand=bs[c('exposure')],
+               stringsAsFactors = FALSE))
+}
+estimand1 <- declare_estimands(handler=make_estimands,
+                            label="Pop_Relationships")
+design1_plus_estimands <- population + sampling_1 + estimand1
+#view estimand
+kable(estimand1(df1), caption = "Estimands 1")
+```
+
+## Estimators
+
+### Estimator 1: Canned Linear Model {#estimator1} 
+
+$$Y_{dpscore} = \beta_0 + \beta_1{X_{exposure}} + \beta_2{X_{edu}} + \beta_3{X_{polaff}} + \beta_4{X_{age}} + \beta_5{X_{gender}} + \epsilon$$
+
+The first estimator is a simple OLS regression model testing the differences of means. The model estimates the differences of means in the perception of democracy score among observations with different levels of exposure (1~5), controlling for political affiliation, level of education, age, and gender. 
+
+```{r OLS_Estimator, echo=FALSE}
+#declare estimator1
+estimator1 <- declare_estimator(dpscore~exposure+educ7+pid7+age9+gender,
+                                model = lm,
+                                term = c("exposure"),
+                                estimand = c("exposure"),
+                                label = "canned_lm")
+
+reg1 <- lm(dpscore~exposure+educ7+pid7+age9+gender, data=df1)
+```
+
+For the OLS estimator, I assume that 1) removing the linear relationships between variables will give me coefficients that are valid quantities of estimation (in other words, that the confounding relationships between variables are linear) and 2) that the observations are i.i.d. Since I've simulated my population, I know that the observations are i.i.d. In reality, I wouldn't be sure if the observations are i.i.d due to the small number of observations I've sampled from the population. However, for the simulated data used here, I can assume i.i.d.. Upon these assumptions, `estimator1` "controls for" political affiliation, level of education, gender, and age by removing the linear relationships among these variables. Adjusting for the control variables here mean removing not only the linear relationship that a control variable has on the dependent variable, but also on the independent variable. The result of this final regression shows the effect of the different level of media exposure on the perception of democracy score independent of the effects of age, gender, level of education, and political affiliation. 
+
+However, this way of adjusting for covariates requires the strong assumption that the relationships between the variables are in fact linear. If one of the relationships is not linear (which is very likely given the number of variables), the effect of the covariate on the independent and dependent variable will not be removed, meaning that it has not been adjusted for. Also, the additive assumption is a very strong one given the number of covariates included in this equation. With so many variables, it is very difficult to sort through the relationships between all of the variables to determine the correct model specification. Achen's ART, or the rule of three points at these problems (@achen_toward_2002). The assumption that all the variables included here are relevant is also a big assumption; including irrelevant variables, or overfitting, even if they show potential correlation, would decrease the efficiency of the estimator. As King, Keohane and Verba showed, the more correlated the main explanatory variable is with the irrelevant control variables, the less efficient the estimate becomes (@king_designing_1994). Finally, the threat of omitted variable bias is also present; I can never be sure whether I've included all the variables relevant to the the question. Simply put, I cannot be sure that I have adjusted "enough" with the simple linear mode. As Rosenbaum mentioned, this can be seen as a standard linear model used in a "naive" way (@rosenbaum_model-based_1987).
+
+To descriptively assess whether linear relationships exist as assumed, I produce plots showing the relationship between the variables used in the estimator. The distributions shown in Figure \ref{fig:linrel} roughly show weak linear relationships between certain variables. There seem to be a clearer linear relationship between the dependent variable and the `exposure` variable compared to that between other variables. Figure \ref{fig:resplot} shows that the residuals are distributed randomly in the plot, implying that the relationship between the variables is likely to be linear. However, this does not make certain that the adjustments made in this model are "enough." Also, the relationships seem to be relatively free from influential points that affect the slope of the regression line. Some potential outliers exist, but they do not seem to be altering the regression line significantly. One worry that arise from the figures is the seemingly non-linear relationships between the independent and control variables. Linear regression removes the _linear_ relationships between the control variable and the dependent varible as well as the independent variable; if the relationships between the independent variable and the control variables are not linear to begin with, this design fails to "adjust enough" since the confounding relationship that exists in a non-linear form remains.
+
+```{r Linear_Relationships, results='asis', out.width='1\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:linrel}Linear Relationships", fig.align = "center", echo=FALSE, results=TRUE}
+#Show relationships between variables
+par(mfrow=c(2,3))
+plot(df1$dpscore, df1$exposure, 
+     xlab = "Perception of Democracy Score",
+     ylab = "Exposure")
+abline(lm(exposure~dpscore, data=df1), col="red", lwd=2)
+plot(df1$dpscore, df1$pid7,
+     xlab = "Perception of Democracy Score",
+     ylab = "Pol Aff")
+abline(lm(pid7~dpscore, data=df1), col="red", lwd=2)
+plot(df1$dpscore, df1$educ7, 
+     xlab = "Perception of Democracy Score",
+     ylab = "Education")
+abline(lm(educ7~dpscore, data=df1), col="red", lwd=2)
+plot(df1$exposure, jitter(df1$pid7), 
+     xlab = "Exposure",
+     ylab = "Pol Aff")
+abline(lm(pid7~exposure, data=df1), col="red", lwd=2)
+plot(df1$exposure, jitter(df1$educ7), 
+     xlab = "Exposure",
+     ylab = "Education")
+abline(lm(educ7~exposure, data=df1), col="red", lwd=2)
+plot(df1$educ7, jitter(df1$pid7), 
+     xlab = "Education",
+     ylab = "Pol Aff")
+abline(lm(pid7~educ7, data=df1), col="red", lwd=2)
+```
+
+In using this estimator, I take caution about the error variance. The standard error of the coefficient estimataes increase as the error variance becomes large. The more variation in the dependent vaariable coming from random error, the less certain I am about the effects of independent variable on the dependent variable -- the validity of the coefficient estimate. If there is variance in the residuals (the standard errors), robust linear models should be used in place of a canned linear model to account for heteroscedasticity. However, the residual plot of the linear model in Figure \ref{fig:resplot} shows that the residuals might be 'homoscedastic (or have "constant variance") (@angrist_mostly_2008).
+
+```{r Residual_Plot, results='asis', out.width='0.7\\linewidth', fig.show='asis', fig.asp=0.6, fig.ncol = 1, fig.cap="\\label{fig:resplot}Estimator Residual Plot", fig.align = "center", echo=FALSE, results=TRUE}
+lme1 <- lm(dpscore~exposure+pid7+educ7+gender+age9, data=df1)
+# Print the residual vs. fitted plot only
+plot(lm(dpscore~exposure+pid7+educ7+gender+age9, data=df1), which = 1)
+```
+
+In order to check for heteroscedasticity more closely, I check for curves along binned intervals of the residuals. In Figure \ref{fig:resplot2}, the blue curve smooths the medians, showing a relatively straight line with a small bump. This indicaates the regression might be a good fit. However, the other curves that smooth the box ends (quartiles) and the fences show a different pattern. The red curve shows a trend of convergence and then divergence from the center blue curve. The green curve also converges and then diverges from the blue curve. Such pattern implies that there might be heteroscedasticity present. Finally, one method to test for heteroscedasticity is to conduct a heteroscedasticity screening test through the Breusch-Pagan test which uses a variance function and chi-square test to test the null hypothesis that the data are homoscedastic. The results show that I can reject the null hypothesis of homoscedasticity at alpha=0.01 (p = 8e-12). This result implies that I should use robust standard errors. However, some references warn against using heterscedasticity screening tests (@long_using_2000). Hence, I make an additional estimator using robust linear regression.
+
+```{r Residual_Plot2, results='asis', out.width='0.7\\linewidth', fig.show='asis', fig.asp=0.6, fig.ncol = 1, fig.cap="\\label{fig:resplot2}Residuals vs. Predicted", fig.align = "center", echo=FALSE, results=TRUE}
+
+lme1res <- residuals(lme1)
+pred <- predict(lme1)
+
+##assign bins, create plot, and apply lowess curve
+##straight lines imply homoscedasticity
+##strong curves imply heteroscedasticity
+n.bins <- 17
+bins <- cut(pred, quantile(pred, probs = seq(0, 1, 1/n.bins)))
+b <- boxplot(lme1res ~ bins, boxwex=1/2, main="",
+             xlab="Predicted", ylab="Residual")
+colors <- hsv(seq(2/6, 1, 1/6))
+temp <- sapply(1:5, function(i) lines(lowess(1:n.bins, b$stats[i,], f=.25), 
+        col=colors[i], lwd=2))
+```
+
+### Estimator 2 : Linear Model with Robust Standard Errors 
+
+$$Y_{dpscore} = \beta_0 + \beta_1{X_{exposure}} + \beta_2{X_{edu}} + \beta_3{X_{polaff}} + \beta_4{X_{age}} + \beta_5{X_{gender}} + \epsilon$$
+
+Here, I create a second estimator that makes the standard errors of the linear model robust. Although heteroscedasticity is not a significant problem when it comes to the choice of estimators (@fox_applied_2015), especially when I am later bootstrapping the model, I use this model as an alternative to the canned linear model because I have detected a relative clear sign of heteroscedasticity, or outliers and influential observations that are not due to data entry errors. Figure \ref{fig:resplot} shows that several points stand out as potentially problematic to the model (I'm sure of this because I assume full control over my simulated population. Therefore, I am not excluding these points). By using robust regression, I am weighing the observations differently based on where the observations lie. I am summing the distribution of errors individually. Specifically, I am giving less weight to larger residuals and more weight to smaller residuals; the more observations weighted close to 1, the closer the robust regression results are to the ordinary least squared regression results. 
+
+>A thought: **Linear Model with Robust Clustered Standard Errors?**
+
+Having full control over the simulated population, I know that the level of education has a sizable impact on one's perceptions of democracy score. Level of education is a variable that can be seen as dividing observations into 7 clusters. Hence, another option is to create a linear model estimator that accounts for clustered standard errors. Clustered standard errors are a type of robust standard errors that account for heterscedasticity across clusters. For instance, people with similar levels of education might be correlated with each other due to the social hierarchy created on the level of education that imbues a homogenous cultural experience. However, for clustered standard errors to be effective in accounting for heterscedasticity across clusters, the data must be homoscedastic within each cluster. The assumption that the data are homoscedastic within each level of education can be justified if the assumption that a strong social stratification exists along the education degree lines holds. One way to test whether using the clustered robust linear model is to test all models to see which one provides larger standard errors (@angrist_mostly_2008). Figure \ref{fig:resplot3} descriptively shows whether within cluster data are homoscedastic. One concern in using clustered robust standard errors is the small number of clusters -- level of education creates only 7 clusters on a sample of 500 observations. The left plot is the distribution of residuals in observations with an associate degree, while the right plot is the distribution of residuals in observations with a master's degree. While the trend shown in the left plot seem relatively homoscedastic, the one on the right plot seeem relatively heteroscedastic. Descriptive analysis only provides limited understanding in this case. I do not include a linear model with robust clustered standard errors in this study, but it is another potentially valid model to test on this study's data.
+
+```{r residual_plot_3, results='asis', out.width='0.7\\linewidth', fig.show='asis', fig.asp=0.6, fig.ncol = 1, fig.cap="\\label{fig:resplot3}Homoscedasticity Within Cluster", fig.align = "center", echo=FALSE, results=TRUE}
+par(mfrow=c(1,2))
+educ7.1<-lm(dpscore[educ7==1]~exposure[educ7==1], data=df1)
+plot(educ7.1, which=1)
+educ7.2<-lm(dpscore[educ7==6]~exposure[educ7==6], data=df1)
+plot(educ7.2, which=1)
+```
+
+
+```{r lm_robust_estimator}
+#declare estimator2
+estimator2 <- declare_estimator(dpscore~exposure+educ7+pid7+age9+gender,
+                                model = lm_robust,
+                                term = c("exposure"),
+                                estimand = c("exposure"),
+                                label = "lm_robust")
+
+reg2 <- rlm(dpscore~exposure+educ7+pid7+age9+gender, data=df1)
+```
+
+### Estimator 3: Propensity Score Matching with Mahalanobis Distance {#estimator3} 
+
+$$Y_{dpscore} = \beta_0 + \beta_1{X_{exposure}} + \epsilon$$
+
+To remedy (or to assess the validity of) the naive approach of Estimator 1 and the uncertainties of Estimator 2, I use propensity score matching (@rosenbaum_central_1983). Matching is an adjustment process in a non-parametric manner which creates two groups that are comparable on select convariates. However, because the initial dataset does not have a treatment variable to distinguish observations into groups, I create one by transforming the `exposure` variable (1 - 5) into a binary (0 - control; 1 - treated). I transform any vector values greater than 3 into 1, connoting exposure to strongly adversarial news contents, and any vector values less than 3 into 0, connoting no or little exposure to strongly adversarial news contents. I discard observations with `exposure` = 3, and the sample set returns n = 392. According to Figure \ref{fig:psbox} the treatment and control groups seem quiet similar in their perceptions of democracy scores to begin with. Arbitrary manipulation of the sample means forgoing randomized treatment assignment, which is crucial in mimicking a randomized experimental study. However, this strategy is still useful because matching also solves the balancing problem very well, sometimes even better than randomized treatment assignment (@rosenbaum_central_1983). Broadly, I first create propensity scores by looking for all the variables that I think can potentially affect the dependent variable and by merging them into a single score for every observation. Then, I estimate the treatment effect in every bin -- subcategorized bins -- that has a controlled and treated observation which are most similar in their covariate properties. Using the matched dataset, I create an OLS estimator. In the OLS estimator, I adjust for all of the covariates that were used to create the propensity score. According to Stuart, Post-matching adjustments are "similar to the idea of "double robustness," and the intuition is [...] to "clean up" small residual covariate imbalances between the groups" (@stuart_matching_2010). 
+
+>*Specific Procedure*
+
+>1. First, Figure \ref{fig:psbox} shows the initial difference in the Perception of Democracy Score between the treatment group and the control group. The difference of means in their scores is not large (0.0261).
+
+```{r ps_matching1, results='asis', out.width='0.7\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:psbox}Treatment and Control Group", fig.align = "center", echo=FALSE, results=TRUE}
+df2 <- df1
+## Make "exposure" variable a treatment variable by considering high exposure (4
+## or 5) as treated (1) and low exposure (1 or 2) as not treated (0). Get rid
+## of rows with 3. This is a process of "prevalence sampling."
+df2$exposure[df2$exposure<3] <- 0
+df2$exposure[df2$exposure>3] <- 1
+df2 <- df2[!grepl(3,df2$exposure),]
+
+## boxplot showing the differences between treated and control
+boxplot(df2$dpscore~df2$exposure, names = c("Control", "Treatment"), 
+        xlab = "", 
+        ylab = "Perception of Dem Score", main="")
+
+## initial difference between treated and controlled
+initialate <- mean(df2$dpscore[df2$exposure==1]) - mean(df2$dpscore[df2$exposure==0])
+```
+>2. Using a fitted logistic regression model that regresses the treatment variable -- `exposure` -- on political affiliation, level of education, age, and gender, I generate the estimated probabilities -- the propensity scores.^[Here, I use the function `bayesglm` -- a Bayesian Generalized Linear Model averaging -- which accounts for the uncertainties of the model parameter. By using a baysian model, I am acknowledging that I haven't selected the model as if it has generated the data (@kaplan_bayesian_2014)] Figure \ref{fig:ps2box} shows that the two boxplots overlap greatly, implying small differences in propensity scores between the two groups.
+
+```{r ps_matching2, results='asis', out.width='0.7\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:ps2box}Group Distribution on Propensity Score", fig.align = "center", echo=FALSE, results=TRUE}
+library(arm)
+## assign lm model
+balfmla <- lm(exposure ~ pid7 + educ7 + age9 + gender, data=df2)
+## Bayes Generalized Linear Model
+glm2<-bayesglm(balfmla,data=df2,family=binomial)
+boxplot(glm2, main="", names = c("Control", "Treatment"),
+        xlab="")
+```
+>3. Then, I match directly on the propensity score without restricting the sample to the region of overlap. I use rank-based Mahalnobis distance^[See Rosenbaum, Paul R. 2010. _Design of Observational Studies_. Springer. p.170.; "The Mahalanobis distance generalizes to several variables the familiar notion of measuring distance in units of the standard deviation. In the Mahalanobis distance, a difference of one standard deviation counts the same for each covariate in x. The Mahalanobis distance takes account of the correlations among variables...."] and conduct "full matching" to create optimal matches of treatment and control cases by allowing multiple treatments and controls to be included per match. The matched sets contain either a treated subject and any positive number of controls or a control subject and any positive number of treated subjects rather than pairing (@hansen_full_2004). Full matching minimizes the weighting average of the estimated distance measure between each treated subject and each control subject within each group. In other words, the treated and the controlled that are the most similar in terms of their political affiliation, level of education, gender, and age are grouped together. (See Table \ref{tab:strmatset} the structure of matched sets).
+
+```{r Matching_Process_1, echo=FALSE, results=FALSE}
+## create linear predictors
+pscores2 <- predict(glm2)
+## make distance matrices
+psdist<-match_on(exposure~pscores2,data=df2)
+#as.matrix(psdist)[1:5,1:5]
+
+## Rank-Based Mahalanobis distance
+mhdist<-match_on(exposure ~ pid7 + educ7 + age9 + gender, data=df2, method="rank_mahalanobis")
+fm1<-fullmatch(mhdist,data=df2)
+fm1sum<-summary(fm1,data=df2,min.controls=0,max.controls=Inf)
+#xtable(fm1sum$matched.set.structures, caption = "Structure of Matched Sets")
+```
+
+\begin{table}[ht]
+\centering
+\caption{Structure of Matched Sets}
+\begin{tabular}{rr}
+  \hline
+ & x \\ 
+  \hline
+13:1 &   1 \\ 
+  12:1 &   1 \\ 
+  11:1 &   1 \\ 
+  10:1 &   1 \\ 
+  9:1 &   2 \\ 
+  8:1 &   6 \\ 
+  6:1 &   6 \\ 
+  5:1 &   6 \\ 
+  4:1 &  10 \\ 
+  3:1 &  15 \\ 
+  2:1 &  12 \\ 
+  1:1 &  22 \\ 
+   \hline
+\end{tabular}
+\label{tab:strmatset}
+\end{table}
+
+> 4. I conduct a balance test to see whether I have "adjusted enough." The test results shown on Figure \ref{fig:xbal1} and Table \ref{tab:bal1} show that after adjustment, treatment subjects and control subjects became more similar on on all covariates. While the raw group was already somewhat well matched, considering that more has become similar between the control and the treatment subject in groups, adjustment done here can be considered a success.
+
+```{r Balance_Test_1, results='asis', out.width='0.7\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:xbal1}Balance Test 1", fig.align = "center", echo=FALSE, results=TRUE}
+##I can also just use glm and do the following
+#glm1<-glm(balfmla,data=df2,family=binomial)
+## Create match scores
+#pscores <- predict(glm2, type="link")
+## Create matches
+#pscorematches <- matching(z=df2$exposure, score=pscores)
+## Matching Results
+#pscorematched <- df2[pscorematches$matched,]
+##Run regression on matched data
+#reg.ps <- lm(dpscore ~ exposure, data = pscorematched)
+
+## Add matched set indicators back to data
+df2$fm1<-NULL
+df2[names(fm1),"fm1"]<-fm1
+
+## Balance test to see if I "adjusted enough"
+xb1<-xBalance(exposure ~ pid7 + educ7 + age9 + gender,
+	      strata=list(raw=NULL,fm1=~fm1),
+	      data=df2,
+	      report=c("std.diffs","z.scores","adj.means",
+		       "adj.mean.diffs", "chisquare.test","p.values"))
+plot(xb1)
+#xtable(xb1,label="tab:bal1")
+#xtable(xb1$result,label="tab:bal1")
+```
+
+\begin{table}[ht]
+\centering
+\caption{Balance Test 1}
+\begin{tabular}{lrrrrrrrrrrrr}
+  \hline
+ & Exposure=0 & Exposure=1 & adj.diff & std.diff & z &  & Exposure=0 & Exposure=1 & adj.diff & std.diff & z &  \\ 
+  \hline
+Pol Aff & 3.46 & 3.70 & 0.24 & 0.11 & 0.89 &     & 3.51 & 3.51 & 0.01 & 0.00 & 0.08 &     \\ 
+  Lev of Edu & 3.72 & 3.20 & -0.52 & -0.34 & -2.69 & **  & 3.66 & 3.55 & -0.12 & -0.07 & -1.97 & *   \\ 
+  Age & 4.61 & 4.88 & 0.27 & 0.15 & 1.19 &     & 4.65 & 4.66 & 0.02 & 0.01 & 0.26 &     \\ 
+  Gender & 1.51 & 1.50 & -0.01 & -0.02 & -0.18 &     & 1.51 & 1.51 & 0.00 & 0.00 & 0.00 &     \\ 
+   \hline
+\end{tabular}
+\label{tab:bal1}
+\end{table}
+
+>5. I analyze the differences within sets. The biggest difference in the Perception of Democracy Score within a set is 0.4133 from set 1.176 containing subjects 21 (T), 662(T), and 879(C). 
+
+```{r set_diffs, echo=FALSE, results=FALSE}
+## What is the biggest difference within set.
+diffswithinsets<-df2 %>% group_by(fm1) %>% summarize(meandiff = mean(dpscore[exposure==1]) - mean(dpscore[exposure==0]))
+summary(diffswithinsets$meandiff)
+
+## Which set is the biggest diff? Which neighborhoods are these?
+bigdiff<-diffswithinsets[which.max(diffswithinsets$meandiff),]
+df2[df2$fm1 == bigdiff$fm1,]
+```
+>6. Each cell in Table \ref{tab:matdif} contains the difference between the treatment(row) and control(column). The mean difference prior to matching is 0.0261. A little over 10 percent of the potential matches in the distance matrix have a smaller difference. The mean difference is 0.1344, and they range from 0 to 1.2465.
+
+```{r distances, echo=FALSE, results=FALSE}
+## Diff pre-matching
+with(df2, mean(dpscore[exposure==1]) - mean(dpscore[exposure==0]))
+## What are the distances like? 
+tmp = df2$dpscore
+names(tmp) <- rownames(df2)
+absdist <- match_on(tmp, z = df2$exposure)
+qtl <- quantile(as.vector(absdist),seq(0,1,.1))
+#stargazer(qtl)
+```
+
+\begin{table}[!htbp] \centering 
+  \caption{Potential Matches and Difference} 
+\begin{tabular}{@{\extracolsep{5pt}} ccccccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+0\% & 10\% & 20\% & 30\% & 40\% & 50\% & 60\% & 70\% & 80\% & 90\% & 100\% \\ 
+\hline \\[-1.8ex] 
+$0$ & $0.025$ & $0.050$ & $0.076$ & $0.104$ & $0.134$ & $0.170$ & $0.213$ & $0.272$ & $0.367$ & $1.246$ \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+  \label{tab:matdif}
+\end{table} 
+
+>7. Finally, I apply calipers to see how they change the matched sets. A caliper of width w is the width we impose on the propensity score. The width is generally a fraction of the standard deviation of the propensity score (@rosenbaum_design_2010). If the propensity scores of two individuals differ by more than the caliper width, the distance between these individuals is set to infinity, and therefore they cannot be matched. By matching with restictions, I get a new matched set. Balance test on the new set shown in Figure \ref{fig:xbal2} shows a much worse balance than the previous set generated through propensity score matching without restrictions. 
+
+```{r calipers, echo=FALSE, results=FALSE}
+## Calipers
+caldist <- mhdist + caliper(absdist,1)
+as.matrix(absdist)[1:5,1:5]
+as.matrix(mhdist)[1:5,1:5]
+as.matrix(caldist)[1:5,1:5]
+
+quantile(as.vector(mhdist),seq(0,1,.1))
+fm2<-fullmatch(psdist+caliper(absdist,2)+caliper(mhdist,50),data=df2,tol=.00001)
+summary(fm2)
+df3 <- df2
+df3$fm2<-NULL
+df3[names(fm2),"fm2"]<-fm2
+```
+
+```{r balance_test_2, results='asis', out.width='0.7\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:xbal2}Balance Test 2", fig.align = "center", echo=FALSE, results=TRUE}
+#balance test on matched set with calipers
+xb2<-xBalance(exposure ~ pid7 + educ7 + age9 + gender,
+	      strata=list(raw=NULL,fm1=~fm1,fm2=~fm2),
+	      data=df3,
+	      report=c("std.diffs","z.scores","adj.means",
+		       "adj.mean.diffs", "chisquare.test","p.values"))
+
+plot(xb2)
+#xtable(xb2$overall,label="tab:bal2")
+#xtable(xb2$results["pid7",,],label="tab:bal2-1")
+```
+
+# Results {#estresult}
+
+## Estimator Results
+```{r stargazer, echo=FALSE, results=FALSE}
+##Print regression table
+#stargazer(reg1, reg2, reg3, header=FALSE, title="Regression Results")
+```
+
+Table \ref{tab:lm123} shows the regression results from estimator 1 and 2.
+
+\begin{table}[!htbp] \centering 
+  \caption{Regression Results} 
+  \label{tab:lm123} 
+\begin{tabular}{@{\extracolsep{1pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent Variable:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{Perceptions of Democracy Score} \\ 
+\\[-1.8ex] & \textit{OLS} & \textit{Linear Robust SE} & \textit{Matching and OLS} \\ 
+ & \textit{} & \textit{} & \textit{} \\ 
+\\[-1.8ex] & Estimator1 & Estimator2 & Estimator3\\ 
+\hline \\[-1.8ex] 
+ Exposure & 0.017$^{**}$ & 0.010$^{*}$ & 0.042$^{*}$ \\ 
+  & (0.007) & (0.006) & (0.023) \\ 
+  & & & \\ 
+ Lev of Edu & 0.030$^{***}$ & 0.023$^{***}$ & 0.032$^{***}$ \\ 
+  & (0.005) & (0.005) & (0.006) \\ 
+  & & & \\ 
+ Pol Aff & $-$0.005 & $-$0.006 & $-$0.009$^{**}$ \\ 
+  & (0.004) & (0.003) & (0.004) \\ 
+  & & & \\ 
+ Age & 0.010$^{**}$ & 0.007$^{*}$ & 0.007 \\ 
+  & (0.004) & (0.004) & (0.005) \\ 
+  & & & \\ 
+ Gender & $-$0.023 & $-$0.020 & $-$0.018 \\ 
+  & (0.016) & (0.014) & (0.018) \\ 
+  & & & \\ 
+ Constant & $-$0.120$^{**}$ & $-$0.068 & $-$0.081$^{*}$ \\ 
+  & (0.048) & (0.043) & (0.048) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 500 & 500 & 392 \\ 
+R$^{2}$ & 0.082 &  & 0.081 \\ 
+Adjusted R$^{2}$ & 0.073 &  & 0.070 \\ 
+Residual Std. Error & 0.176 (df = 494) & 0.146 (df = 494) & 0.181 (df = 386) \\ 
+F Statistic & 8.838$^{***}$ (df = 5; 494) &  & 6.848$^{***}$ (df = 5; 386) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+
+To assess whether the estimates derived from the estimators have reached the estimand, the estimators' performances can be evaluated by looking at characteristics like the bias, consistency, and MSE. The research design diagnoses conducted in this study are based on 1000 bootstrapped simulations of the estimators using the `DeclareDesign` package. The `DeclareDesign` package also provides information on test statistics, which will be explained below. 
+
+First, I provide explanations on the regression results. The canned linear model predicts that as the level of exposure to adversarial news contents increases by a value of 1, the mean perception of democracy score increases by 0.017 with a standard error of 0.007 when all other variables are set to 0. In other words, a one standard deviation shift in the exposure measure corresponds to a shift of about .7 percent on the perception of democracy measure in the positive way. The coefficient 0.017 is the estimate of the actual population parameter generated by estimator 1. The result has a p-value below 0.05 level, so I can reject the null hypothesis that more exposure will not have an effect on one's perception of democracy score. Simply put, more exposure to adversarial news contents is significantly related to one's possessing a more competitive perception of democracy. The robust regression generates somewhat similar but different coefficients and standard errors for all variables. Almost all variables have smaller coefficients and higher p-values. To see whether this difference is typical for the two models, I will evaluate the simulations of estimates, and standard errors, and p-values in [Section 4.2](#teststat). On the other hand, post-matching regression results provide a completely different coefficient for the `exposure` variable. It predicts that as the level of exposure to adversarial news contents increase by a value of 1, the mean perception of democracy score increases by 0.042 with a standard error of 0.023. While both give significant results, the p-value in the matched regression is just below 0.1, so it is harder to reject the null hypothesis. A higher standard error indicates that the sample is less precise an estimate of the population parameter, hence the higher coefficient still leads to lower p-value. There are two potential explanations: 1) the reduced sample size affected the estimation and 2) matching transformed the sample to be a worse representation of the population. I argue that the answer is that both is true. (See [section 4.3](#teststat2))
+
+```{r xtableforolsmatch, echo=FALSE, results=FALSE}
+##declare estimator3
+estimator3 <- declare_estimator(dpscore~exposure+pid7+educ7+age9+gender,
+                                model = lm,
+                                term = 'exposure',
+                                estimand = 'exposure',
+                                label = "canned_lm")
+
+reg3 <- lm(dpscore~exposure+pid7+educ7+age9+gender, data=df2)
+```
+
+## Test Statistic and Estimator Diagnosis for Estimator 1 and 2 {#teststat}
+
+### Test Statistic 
+
+The hypothesis provided in [Section 2](#rdhyp) is about the population parameter. However, the data I've been using for the estimators are a sample of that population drawn to infer about the population. Hence, I need to assess whether the results I generated from the estimators can reject the null hypothesis. For the first two estimators, I use a Z-test for hypothesis testing on the `exposure` variable. First of all, I use a Z-test because my sample is large (n=500). Also, I've simulated my population, so I know the data points are independent of each other and that the sample was randomly selected. By using the Z-test, I am looking for the estimate value's relationship to the mean of the group of values, measured in terms of standard deviation from the mean. I am doing so because I am looking for how wellthe estimator predicts the average change in the dependent variable is associated with the average change in the independent variable.
+
+```{r TST1, echo=FALSE, results=TRUE}
+##declare full design with estimators 1 and 2
+design_full1 <- design1_plus_estimands + 
+  estimator1 + estimator2
+##run 1000 simulations of the two estimators
+simulations <- simulate_design(design_full1, sims = 1000)
+##show the first 10 simulations (5 from each estimator) on table
+#xtable(head(simulations[,c(2,4,5,7,8,9,10)], n=10))
+```
+
+
+```{r meansims, echo=FALSE, results=FALSE}
+mean(simulations$statistic[simulations$estimator_label == "canned_lm"])
+mean(simulations$estimate[simulations$estimator_label == "canned_lm"])
+mean(simulations$p.value[simulations$estimator_label == "canned_lm"])
+mean(simulations$std.error[simulations$estimator_label == "canned_lm"])
+mean(simulations$statistic[simulations$estimator_label == "lm_robust"])
+mean(simulations$estimate[simulations$estimator_label == "lm_robust"])
+mean(simulations$p.value[simulations$estimator_label == "lm_robust"])
+mean(simulations$std.error[simulations$estimator_label == "lm_robust"])
+```
+
+The `DeclareDesign` package conveniently provides the estimates, z scores, p-values and standard error for every simulation through the `simulate_design` function. (See Table \ref{tab:simhead1} for the first 5 simulations of each estimators). I performed 1,000 simulations of estimators 1 and 2.
+
+\begin{table}[ht]
+\centering
+\caption{Simulation Results for Estimator 1 and 2}
+\begin{tabular}{rrrlrrrr}
+  \hline
+ & sim\_ID & estimand & estimator\_label & estimate & std.error & statistic & p.value \\ 
+  \hline
+1 &   1 & 0.01 & canned\_lm & 0.01 & 0.01 & 1.64 & 0.10 \\ 
+  2 &   1 & 0.01 & lm\_robust & 0.01 & 0.01 & 1.75 & 0.08 \\ 
+  3 &   2 & 0.01 & canned\_lm & 0.01 & 0.01 & 2.49 & 0.01 \\ 
+  4 &   2 & 0.01 & lm\_robust & 0.01 & 0.01 & 2.61 & 0.01 \\ 
+  5 &   3 & 0.01 & canned\_lm & 0.01 & 0.01 & 2.31 & 0.02 \\ 
+  6 &   3 & 0.01 & lm\_robust & 0.01 & 0.01 & 2.62 & 0.01 \\ 
+  7 &   4 & 0.01 & canned\_lm & 0.01 & 0.01 & 2.57 & 0.01 \\ 
+  8 &   4 & 0.01 & lm\_robust & 0.01 & 0.01 & 2.72 & 0.01 \\ 
+  9 &   5 & 0.01 & canned\_lm & 0.01 & 0.01 & 1.32 & 0.19 \\ 
+  10 &   5 & 0.01 & lm\_robust & 0.01 & 0.01 & 1.40 & 0.16 \\ 
+   \hline
+\end{tabular}
+\label{tab:simhead1}
+\end{table}
+
+Figure \ref{fig:est1edist} presents the distribution of 1,000 simulated estimates for estimators 1 and 2. The figure shows that the estimates are normally distributed with the mean (0.0156) slightly higher than the estimand (0.0127). For estimator 1, the mean test statistic is 2.671 and the mean p-value, shown in Figure \ref{fig:est1epval}, is 0.039. The simulations allow me to argue that, on average at $\alpha$ =0.05, there is a significant chance that I can reject the null hypothesis that more exposure will not have an effect on one's perception of democracy score, and that this will likely be true with the entire population as well. Standard error increases when error variance becomes larger. The higher the error variance, the less we know about the independent  variable(`exposure`)'s effect on the dependent variable (`perception of democracy score`). The mean standard error variance is 0.006, which allows me to predict very small error variance and also claim significant amount of knowledge about the relationship between the independent and the dependent variable. For estimator 2, the mean test statistic is 2.889 and the p-value, also shown in Figure\ref{fig:est1epval}, is 0.031. Again, the simulations allow me to argue that, on average at $\alpha$ =0.05, there is a significant chance that I can reject the null hypothesis. The mean standard error is 0.005. Overall, estimator 2 is slightly more likely to generate more robust evidence for me to reject the null hypothesis. 
+
+```{r OLS_Estimators_Graphs1, results='asis', out.width='1\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:est1edist}Distribution of Estimates (Estimators 1 and 2)", fig.align = "center", echo=FALSE, results=TRUE}
+## Graph Estimates
+summary_df <-
+  simulations %>%
+  group_by(estimator_label) %>%
+  summarize(`Mean Estimate` = mean(estimate),
+            `Mean Estimand` = mean(estimand)) %>%
+  gather(key, value, `Mean Estimand`, `Mean Estimate`)
+
+ggplot(simulations, aes(estimate)) +
+  geom_histogram(bins = 30) +
+  geom_vline(data = summary_df, aes(xintercept = value, color = key)) +
+  facet_wrap( ~ estimator_label) + 
+  theme_bw() +
+  theme(strip.background = element_blank(),
+        legend.position = "bottom")
+```
+
+```{r OLS_PValue_Graphs, results='asis', out.width='1\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:est1epval}Distribution of P-Values (Estimator 1 and 2)", fig.align = "center", echo=FALSE, results=TRUE}
+## Graph P-values
+summary_df <-
+  simulations %>%
+  group_by(estimator_label) %>%
+  summarize(`Mean P-Value` = mean(p.value)) %>%
+  gather(key, value, `Mean P-Value`)
+
+ggplot(simulations, aes(p.value)) +
+  geom_histogram(bins = 100) +
+  geom_vline(data = summary_df, aes(xintercept = value, color = key)) +
+  facet_wrap( ~ estimator_label) + 
+  theme_bw() +
+  theme(strip.background = element_blank(),
+        legend.position = "bottom")
+```
+
+### Diagnosing Estimators
+```{r assess_est, echo=FALSE, results=FALSE}
+set.seed(1323)
+#1000 simulations on design_full1
+dfull1 <- diagnose_design(design_full1, sims = 1000)
+#dfull1$diagnosands_df
+#xtable(head(dfull1$diagnosands_df[,c(3,5,7,9,11)]))
+```
+
+The `DeclareDesign` package, again, conveniently generates the bias, RMSE, power, and coverage through the function `diagnose_design`. (See Table \ref{tab:diagest12} for the diagnoses on estimators 1 and 2). Again, I performed 1,000 simulations of estimators 1 and 2 to generate the diagnoses.
+
+\begin{table}[ht]
+\centering
+\caption{Diagnosis on Estimator 1 and 2}
+\begin{tabular}{rlrrrr}
+  \hline
+ & estimator\_label & bias & rmse & power & coverage \\ 
+  \hline
+1 & canned\_lm & 0.00 & 0.01 & 0.84 & 0.96 \\ 
+  2 & lm\_robust & 0.00 & 0.01 & 0.87 & 0.95 \\ 
+   \hline
+\end{tabular}
+\label{tab:diagest12}
+\end{table}
+
+Here, both estimators are shown to be **unbiased** (biases equal to 0) estimators for the `exposure` coefficients. If I were to repeatedly sample and estimate the coefficients of exposure, the distribution of the estimates would be centered on the true parameter value of exposure (the estimand). The **power** of the estimators for exposure are 0.84 for estimator 1 and 0.87 for estimator 2. Power is the probability of rejecting the null hypothesis when it is false (avoiding a Type II error). Power ranges between 0 and 1 and closer it is to 1, better powered is the estimator, meaning it is good at detecting a false null hypothesis. While 0.84 and 0.87 can't be considered the most optimal power of an estimator, it is still enough to argue that the estimators have good powers. The **RMSE**(Root Mean Squared Error) is the standard deviation of the residuals that measures how well the data values fit the line of best fit. For both estimators, the RMSE is 0.01, meaning that the observed data fits well to the line of best fit created by the samples (and the simulations tell us that it will fit well with the population line of best fit as well). Finally, **coverage rates** refer to the coverage probability of the confidence intervals. The covarge probability is how often we would obtain a confidence interval that contains the true population parameter if we were to repeat the entire sampling and analysis process. Simply put, the coverage rates indicate the false-positive rate at alpha = 0.05, are 0.96 for estimator 1 and 0.95 for estimator 2. These rates show that they are unlikely to generate a type 1 error. Overall, it is difficult to claim that one estimator is a better estimator of the population parameter. 
+
+## Test Statistic and Estimator Diagnosis for Estimator 3 {#teststat2}
+
+### Test Statistic 
+
+While using the same linear regression model, estimator 3 is diagnosed against a new estimand using the matched sample data. The new estimand, as in Table \ref{tab:estmnd2}, is 0.0261. The `DeclareDesign` package conveniently provides the estimates, z scores, p-values and standard error for every simulation through the `simulate_design` function. (See Table \ref{tab:simhead3} for the first 10 simulations of the estimator). I again use the Z-test to obtain Z-scores because I am interested in the average treatment effect -- the differnce between the mean average change in the perception of democracy score for the treatment group and the control group. I performed 1,000 simulations (creating 1,000 bootstrapped samples from the sample to estimate the target of estimation -- the population parameter) of estimator 3.
+
+```{r Estimand_Estimator_2, echo=FALSE, results=TRUE, fig.align= "center"}
+## Make and declare estimand 2 for matched regression model
+make_estimands2 <- function(data){
+    bs <- coef(lm(dpscore~exposure, data=df2))
+    return(data.frame(estimand_label= 'exposure',
+               estimand=bs['exposure'],
+               stringsAsFactors = FALSE))
+}
+estimand2 <- declare_estimands(handler=make_estimands2,
+                            label="Pop_Relationships")
+##combine estimand 2 with the sample
+design1_plus_estimands2 <- population + sampling_1+ estimand2
+## table
+kable(estimand2(df2), caption = "Estimands 2\\label{tab:estmnd2}")
+```
+
+```{r TST2, echo=FALSE, results=TRUE}
+##run simulations on estimator 3 against estimand 2
+design_full2 <- design1_plus_estimands2 + estimator3
+simulations2 <- simulate_design(design_full2, sims = 1000)
+##show the first 10 simulations on table
+#xtable(head(simulations2[,c(2,4,5,7,8,9,10)], n=10))
+```
+
+\begin{table}[ht]
+\centering
+\caption{Simulation Results for Estimator 3}
+\begin{tabular}{rrrlrrrr}
+  \hline
+ & sim\_ID & estimand & estimator\_label & estimate & std.error & statistic & p.value \\ 
+  \hline
+1 &   1 & 0.03 & canned\_lm & 0.02 & 0.01 & 2.99 & 0.00 \\ 
+  2 &   2 & 0.03 & canned\_lm & 0.01 & 0.01 & 2.25 & 0.02 \\ 
+  3 &   3 & 0.03 & canned\_lm & 0.02 & 0.01 & 3.94 & 0.00 \\ 
+  4 &   4 & 0.03 & canned\_lm & 0.02 & 0.01 & 2.70 & 0.01 \\ 
+  5 &   5 & 0.03 & canned\_lm & 0.01 & 0.01 & 1.50 & 0.14 \\ 
+  6 &   6 & 0.03 & canned\_lm & 0.01 & 0.01 & 1.89 & 0.06 \\ 
+  7 &   7 & 0.03 & canned\_lm & 0.01 & 0.01 & 2.34 & 0.02 \\ 
+  8 &   8 & 0.03 & canned\_lm & 0.02 & 0.01 & 3.19 & 0.00 \\ 
+  9 &   9 & 0.03 & canned\_lm & 0.01 & 0.01 & 1.84 & 0.07 \\ 
+  10 &  10 & 0.03 & canned\_lm & 0.02 & 0.01 & 3.76 & 0.00 \\ 
+   \hline
+\end{tabular}
+\label{tab:simhead3}
+\end{table}
+
+```{r meansims2, echo=FALSE, results=FALSE}
+mean(simulations2$statistic[simulations2$estimator_label == "canned_lm"])
+mean(simulations2$estimate[simulations2$estimator_label == "canned_lm"])
+mean(simulations2$p.value[simulations2$estimator_label == "canned_lm"])
+mean(simulations2$std.error[simulations2$estimator_label == "canned_lm"])
+```
+
+Figure \ref{fig:est3est} presents the distribution of 1,000 simulated estimates for estimator 3. The figure shows that the estimates are normally distributed with the mean (0.0158). The mean test statistic is 2.697 and the mean p-value, shown in Figure\ref{fig:est2epval}, is 0.038. The simulations allow me to argue that, on average at $\alpha$ =0.05, there is a significant chance that I can reject the null hypothesis that being treated with adversarial news contents will not have an effect on one's perception of democracy score, and that this will likely be true with the entire population as well. The mean standard error variance is 0.006, which allows me to predict very small error variance and also claim significant amount of knowledge about the relationship between the independent and the dependent variable. However, the esitmate is much lower than the estimand (0.0127), and this is very problematic, since the estimator cannot estimate the true parameter well. More epxlanation will be given in the next section on estimator diagnosis.
+
+
+```{r OLS_Estimators_Graphs2, results='asis', out.width='1\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:est3est}Distribution of Estimates (Estimator 3)", fig.align = "center", echo=FALSE, results=TRUE}
+## Graph Estimates
+summary_df <-
+  simulations2 %>%
+  group_by(estimator_label) %>%
+  summarize(`Mean Estimate` = mean(estimate),
+            `Mean Estimand` = mean(estimand)) %>%
+  gather(key, value, `Mean Estimand`, `Mean Estimate`)
+
+ggplot(simulations2, aes(estimate)) +
+  geom_histogram(bins = 100) +
+  geom_vline(data = summary_df, aes(xintercept = value, color = key)) +
+  facet_wrap( ~ estimator_label) + 
+  theme_bw() +
+  theme(strip.background = element_blank(),
+        legend.position = "bottom")
+```
+
+```{r OLS_PValue_Graphs2, results='asis', out.width='1\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:est2epval}Distribution of P-Values (Estimator 3)", fig.align = "center", echo=FALSE, results=TRUE}
+## Graph P-values
+summary_df <-
+  simulations2 %>%
+  group_by(estimator_label) %>%
+  summarize(`Mean P-Value` = mean(p.value)) %>%
+  gather(key, value, `Mean P-Value`)
+
+ggplot(simulations2, aes(p.value)) +
+  geom_histogram(bins = 30) +
+  geom_vline(data = summary_df, aes(xintercept = value, color = key)) +
+  facet_wrap( ~ estimator_label) + 
+  theme_bw() +
+  theme(strip.background = element_blank(),
+        legend.position = "bottom")
+```
+
+```{r diag22, echo=FALSE, results=FALSE}
+set.seed(1323)
+## 1000 simulations on design_full2
+dfull2 <- diagnose_design(design_full2, sims = 1000)
+#dfull2$diagnosands_df
+#xtable(head(dfull2$diagnosands_df[,c(3,5,7,9,11)]))
+```
+
+\begin{table}[ht]
+\centering
+\caption{Diagnosis on Estimator 3}
+\begin{tabular}{rlrrrr}
+  \hline
+ & estimator\_label & bias & rmse & power & coverage \\ 
+  \hline
+1 & canned\_lm & -0.01 & 0.01 & 0.84 & 0.58 \\ 
+   \hline
+\end{tabular}
+\label{tab:diagtest3}
+\end{table}
+
+Figure \ref{fig:est3est} shows that the estimated parameter of estimator 3 is significantly off from the estimand. Looking at the bias, I can see that the estimator underestimates the parameter. Also, the coverage rates show that the estimator's false-positive rate is high, meaning that it will be hard for me to obtain aa confidence interval that contains the true population parameter if I were to repeat the entire sampling and analysis process. At the same time, the estimator has power as high as other estimators. From this diagnosis, I can predict that the propensity score matching with mahalanobis distance has created dataset that does not represent the population well (not accurate), but precise. I have reformulated a variable into a dichotomous variable and omitted all the observations with the value '3'. Hence, even if the `exposure` variaable initially has significant explanatory power, dichotomization has distorted its explatory power. Simply put, the matching process has created bias in the estimator. Even when looking at Table \ref{tab:lm123}, I can see that while the coefficient for `exposure` is higher than other estimators, the p-value is lower because it has weaker explanatory power over the dependent variable due to matching. Hence, I have dichotomized the `exposure` variable for the entire population and diagnosed estimator 3 again. Table \ref{tab:est3dicpop} shows that if I dichotomize the `exposure` variable at the population level, my bias goes down to 0.003, turning positive and becoming smaller. This shows that the initial matching outcomes do not well represent the population parameter as-is. The propensity score balances the sample well, but good balance did not necessarily bring accuracy to the model, because the new matched set deviated farther from the true population parameter. 
+
+```{r popdich, echo=FALSE, results = FALSE}
+blw2019b = blw2019a
+blw2019b$exposure = ifelse(blw2019a$exposure>=3, 1, 0)
+population0<-
+  declare_population(blw2019b)
+df4 <- population0()
+
+## initial difference between treated and controlled
+initialate <- mean(df4$dpscore[df4$exposure == 1]) - mean(df4$dpscore[df4$exposure == 0])
+library(arm)
+## assign lm model
+balfmla <- lm(exposure ~ pid7 + educ7 + age9 + gender, data = df4)
+## Bayes Generalized Linear Model
+glm2 <- bayesglm(balfmla, data = df4, family = binomial)
+boxplot(glm2,
+        main = "", names = c("Control", "Treatment"),
+        xlab = ""
+)
+## create linear predictors
+pscores2 <- predict(glm2)
+## make distance matrices
+psdist <- match_on(exposure ~ pscores2, data = df4)
+# as.matrix(psdist)[1:5,1:5]
+## Rank-Based Mahalanobis distance
+mhdist <- match_on(exposure ~ pid7 + educ7 + age9 + gender, data = df4, method = "rank_mahalanobis")
+fm1 <- fullmatch(mhdist, data = df4)
+fm1sum <- summary(fm1, data = df4, min.controls = 0, max.controls = Inf)
+# xtable(fm1sum$matched.set.structures, caption = "Structure of Matched Sets")
+fm1 = as.numeric(as.character(fm1))
+## Add matched set indicators back to data
+df4$fm1 <- fm1
+
+make_estimands3 <- function(data){
+    bs <- coef(lm(dpscore~exposure, data=df4))
+    return(data.frame(estimand_label= 'exposure',
+               estimand=bs['exposure'],
+               stringsAsFactors = FALSE))
+}
+estimand3 <- declare_estimands(handler=make_estimands3,
+                            label="Pop_Relationships")
+
+## combine estimand 2 with the sample
+design1_plus_estimands3 <- population0 + sampling_1 + estimand3
+## table
+kable(estimand3(df4), caption = "Estimands 3\\label{tab:estmnd3}")
+## run simulations on estimator 3 against estimand 2
+design_full3 <- design1_plus_estimands3 +  estimator3
+simulations3 <- simulate_design(design_full3, sims = 1000)
+```
+
+```{r popestgraph, results='asis', out.width='1\\linewidth', fig.show='asis', fig.asp=0.5, fig.ncol = 1, fig.cap="\\label{fig:est3popest}Distribution of Estimates (Estimator 3)", fig.align = "center", echo=FALSE, results=TRUE}
+## Graph Estimates
+summary_df <-
+  simulations3 %>%
+  group_by(estimator_label) %>%
+  summarize(
+    `Mean Estimate` = mean(estimate),
+    `Mean Estimand` = mean(estimand)
+  ) %>%
+  gather(key, value, `Mean Estimand`, `Mean Estimate`)
+ggplot(simulations3, aes(estimate)) +
+  geom_histogram(bins = 100) +
+  geom_vline(data = summary_df, aes(xintercept = value, color = key)) +
+  facet_wrap(~estimator_label) +
+  theme_bw() +
+  theme(
+    strip.background = element_blank(),
+    legend.position = "bottom"
+  )
+```
+
+```{r diag333, echo=FALSE, results=FALSE}
+set.seed(1323)
+## 1000 simulations on design_full2
+dfull4 <- diagnose_design(design_full3, sims = 1000)
+#dfull4$diagnosands_df
+#xtable(head(dfull4$diagnosands_df[,c(3,5,7,9,11)]))
+```
+
+\begin{table}[ht]
+\centering
+\caption{Estimator 3 on Dichotomized Population `Exposure` Variable}
+\begin{tabular}{rlrrrr}
+  \hline
+ & estimator\_label & bias & rmse & power & coverage \\ 
+  \hline
+1 & canned\_lm & 0.003 & 0.01 & 0.39 & 0.99 \\ 
+   \hline
+\end{tabular}
+\label{tab:est3dicpop}
+\end{table}
+
+
+# Implications 
+
+## On Substantive Topic
+
+This methods paper provided great insights into the substance of my research project. First, it made me think very hard about measurement. Initially, I simply argued that I want to observe how people perceive democracy by observing people's responses to a few questions about democratic institutions and how they react to priming on certain political news contents. However, this simulation exercise really made me think deep about what kind of measurement really measures people's "perception" of democracy and what kind of institutions and norms represent "democracy." Through this endeavor, I made up my mind to create a comprehensive score of perceptions of democracy, as I used and explained in this exercise. Second, it made me think about the relationship between exposure to adversarial news contents and perceptions of democracy. As I was creating my simulaated dependent variable (`dpscore`), I could not but think about how the variable must be related to a vast array of factors; I felt extremely naive as I was claiming in this exercise how the variable should be related to three or four covariates. Even the main explanatory variable must be complicatedly interconnected with other variables that confound its relationship with the dependent variable. In this sense, I had to rethink about what really explains the change in people's perception of democracy and what kind of mechanism operates beneath it. Hence, there seems to be a very high hurdle to overcome for me to argue that my design and estimation is really representative of the real world. Overall, the simulation exercise helped me evaluate my initial thoughts about the substantive aspects of my research project and forgo any naive expectations that I initially had. 
+
+## On Methods and Research Design
+
+I started this project thinking that I would simply send out a survey experiment and "run regression" on the data. In fact, this was what I had in mind when I entered graduate school. Having no prior knowledge about empirical research, I expected that empirical research would be like "doing some math and asking the computer to run some regressions to get three stars." The Quant 1 class initially shattered this image somewhat, but this class, especially this final project, has really transformed how I view and approach research. Learning that different estimators generate different estimates of the true population, and that there's no panacea estimator, frustrated me. At the same time, the process of looking for the best estimator really taught me the details of each estimator and how to interpret and diagnose estimators. The `DeclareDeseign` package save a lot of effort and time in this regard. Also, this process helped me think about the sample's relationship with the population and what the central goal of estimation is -- to predict the true population parameter. Especially through the matching exercise done here, I learned that focusing too much on precision (and unintentionally forgoing accuracy) can seriously jepardize the entire research. I also learned that research design dictates the test, the estimation, and the outcome. When I chose to adjust for covariates by using propensity score matching, I was signing up for trouble; by matching, the estimator became more precise, but inaccurate, becoming a much worse estimator. The same test was done on the same estimator, but because I had a new design, the test statistics were also worse, leading to higher p-values and lower significance. Finally, I learned that there's more to research than finding "significance." From the very little readings I've done on empirical political science, the impression I received was that "significance is what I'm looking for." However, as I went through the various steps taken in this project, significance wasn't an important issue. I was looking more for justifications and reasons for taking certain action. For instance, I wanted to try using `lm_robust` since I've learned it in this course. However, I needed justification to use it. So I looked at the residuals for heteroscedasticity. When descriptive reference was not enough to declare heteroscedasticity, I further divided the residual plot and detected heteroscedasticity. I even thought about conducting a BPtest, but one of the readings reminded me that heteroscedasticity screening tests often provide misleading results. Having learned to dig deeper into the reasons behind designing and conducting the research in a specific way, I became more confident in the choices that I'm making and, even when I find bad results (i.e. high p-value, inaccurate or biased data), I became more able to either find the cause of the bad results or at least explain why the results came out the way they did. Overall, this final project -- which was probably intended as a review of the semester's worth of contents -- helped me "finally" understand what I've been doing with my teammates when were attempting to make sense of the exploration homeworks. 
+
+
+# The Code Appendix
+
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
+
+## Github Repository
+
+# References
